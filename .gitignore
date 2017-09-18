@@ -1,0 +1,12 @@
+*/bin/*
+*/Debug/*
+*/Release/*
+*/output/*
+*/data/*
+*.ncb
+.metadata
+*.txt
+*log*.xml
+RemoteSystemsTempFiles
+.recommenders
+*.jpg
