@@ -63,7 +63,7 @@ JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_initialize
 (JNIEnv *, jclass)
 {
 	//DFileLog::GetInstance()->Clear();
-	DFileLog::GetInstance()->EnableSaveLog(true);
+	//DFileLog::GetInstance()->EnableSaveLog(true);
 
 	int err = 0;
 	err = THSAPI_TongHuaShunInit();
