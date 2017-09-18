@@ -1,5 +1,6 @@
 package pers.di.thsapi;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -22,8 +23,15 @@ public class THSApi {
 	
 	static{
 		// add libpath
-		String yourPath = ".";
-		System.setProperty("java.library.path", yourPath);
+		String binPath = THSApi.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		if (binPath.endsWith(".jar")) {// 可执行jar包运行的结果里包含".jar"  
+            // 截取路径中的jar包名  
+			binPath = binPath.substring(0, binPath.lastIndexOf("/") + 1);  
+        }  
+		File file = new File(binPath);
+		String CurPath = file.getAbsolutePath();
+		//System.out.println(CurPath);
+		System.setProperty("java.library.path", CurPath);
 		Field sysPath = null;
 		try {
 			sysPath = ClassLoader.class.getDeclaredField("sys_paths");
