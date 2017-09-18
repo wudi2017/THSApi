@@ -425,11 +425,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\jni\pers_di_thsapi_THSApi_ObjectContainer.h"
+					RelativePath=".\jni\pers_di_thsapi_THSApi_HoldStock.h"
 					>
 				</File>
 				<File
-					RelativePath=".\jni\pers_di_thsapi_THSApi_THSHoldStock.h"
+					RelativePath=".\jni\pers_di_thsapi_THSApi_ObjectContainer.h"
 					>
 				</File>
 				<File

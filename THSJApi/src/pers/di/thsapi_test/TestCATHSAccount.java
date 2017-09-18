@@ -47,12 +47,12 @@ public class TestCATHSAccount {
 
 		// 持股列表测试
 		{
-			List<THSHoldStock> container = new ArrayList<THSHoldStock>();
+			List<HoldStock> container = new ArrayList<HoldStock>();
 	        int ret = THSApi.getHoldStockList(container);
 	        fmt.format("CATHSAccount.getHoldStockList err(%d) resultList size(%d)\n", ret, container.size());
 	        for(int i=0;i<container.size();i++)
 	        {
-	        	THSHoldStock cHoldStock = container.get(i);
+	        	HoldStock cHoldStock = container.get(i);
 	        	fmt.format("    {%s %d %d %.3f %.3f %.3f}\n", cHoldStock.stockID, cHoldStock.totalAmount, cHoldStock.availableAmount,
 	        			cHoldStock.refProfitLoss, cHoldStock.refPrimeCostPrice, cHoldStock.curPrice);
 	        }
@@ -71,54 +71,54 @@ public class TestCATHSAccount {
 		}
 		
 		// test loop
-		{
-			long testtimes = Long.MAX_VALUE;
-			for(int m=0; m<testtimes; m++)
-			{
-				
-				SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String datetime = sdf.format(new Date());
-				
-				fmt.format("\n[%s] CATHSAccount testing times(%s) ==================>>>>\n", datetime, m);
-				
-				{
-					ObjectContainer<Float> container = new ObjectContainer<Float>();
-			        int ret = THSApi.getAvailableMoney(container);
-			        fmt.format("CATHSAccount.getAvailableMoney err(%d) AvailableMoney(%.2f)\n", ret, container.get());
-				}
-
-				{
-					ObjectContainer<Float> container = new ObjectContainer<Float>();
-			        int ret =  THSApi.getTotalAssets(container);
-			        fmt.format("CATHSAccount.getTotalAssets err(%d) TotalAssets(%.2f)\n", ret, container.get());
-				}
-				
-				{
-					ObjectContainer<Float> container = new ObjectContainer<Float>();
-			        int ret =  THSApi.getAllStockMarketValue(container);
-			        fmt.format("CATHSAccount.getAllStockMarketValue err(%d) AllStockMarketValue(%.2f)\n", ret, container.get());
-				}
-				
-				{
-					List<THSHoldStock> container = new ArrayList<THSHoldStock>();
-			        int ret = THSApi.getHoldStockList(container);
-			        fmt.format("CATHSAccount.getHoldStockList err(%d) resultList size(%d)\n", ret, container.size());
-			        for(int i=0;i<container.size();i++)
-			        {
-			        	THSHoldStock cHoldStock = container.get(i);
-			        	fmt.format("    {%s %d %d %.3f %.3f %.3f}\n", cHoldStock.stockID, cHoldStock.totalAmount, cHoldStock.availableAmount,
-			        			cHoldStock.refProfitLoss, cHoldStock.refPrimeCostPrice, cHoldStock.curPrice);
-			        }
-				}
-		        
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+//		{
+//			long testtimes = Long.MAX_VALUE;
+//			for(int m=0; m<testtimes; m++)
+//			{
+//				
+//				SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//				String datetime = sdf.format(new Date());
+//				
+//				fmt.format("\n[%s] CATHSAccount testing times(%s) ==================>>>>\n", datetime, m);
+//				
+//				{
+//					ObjectContainer<Float> container = new ObjectContainer<Float>();
+//			        int ret = THSApi.getAvailableMoney(container);
+//			        fmt.format("CATHSAccount.getAvailableMoney err(%d) AvailableMoney(%.2f)\n", ret, container.get());
+//				}
+//
+//				{
+//					ObjectContainer<Float> container = new ObjectContainer<Float>();
+//			        int ret =  THSApi.getTotalAssets(container);
+//			        fmt.format("CATHSAccount.getTotalAssets err(%d) TotalAssets(%.2f)\n", ret, container.get());
+//				}
+//				
+//				{
+//					ObjectContainer<Float> container = new ObjectContainer<Float>();
+//			        int ret =  THSApi.getAllStockMarketValue(container);
+//			        fmt.format("CATHSAccount.getAllStockMarketValue err(%d) AllStockMarketValue(%.2f)\n", ret, container.get());
+//				}
+//				
+//				{
+//					List<HoldStock> container = new ArrayList<HoldStock>();
+//			        int ret = THSApi.getHoldStockList(container);
+//			        fmt.format("CATHSAccount.getHoldStockList err(%d) resultList size(%d)\n", ret, container.size());
+//			        for(int i=0;i<container.size();i++)
+//			        {
+//			        	HoldStock cHoldStock = container.get(i);
+//			        	fmt.format("    {%s %d %d %.3f %.3f %.3f}\n", cHoldStock.stockID, cHoldStock.totalAmount, cHoldStock.availableAmount,
+//			        			cHoldStock.refProfitLoss, cHoldStock.refPrimeCostPrice, cHoldStock.curPrice);
+//			        }
+//				}
+//		        
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 
         fmt.format("### main end\n");
     }

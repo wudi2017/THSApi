@@ -43,7 +43,7 @@ public class THSApi {
 		}
 		
 		// load c++ API dll
-		String libraryName = "thscapi_x86";
+		String libraryName = "thscapi";
 		Properties properties = System.getProperties();
 		String jvmName = properties.getProperty("java.vm.name");
 		if(jvmName.contains("64"))
@@ -98,7 +98,7 @@ public class THSApi {
 	}
 
 	
-	public static class THSHoldStock {
+	public static class HoldStock {
 		public String stockID; // 股票ID
 		public int totalAmount; // 持有总量（股）
 		public int availableAmount; // 可卖数量
@@ -138,7 +138,7 @@ public class THSApi {
 	 * getHoldStockList
 	 * 获取持股列表
 	 */
-	public static native int getHoldStockList(List<THSHoldStock> container);
+	public static native int getHoldStockList(List<HoldStock> container);
 	
 	/*
 	 * buyStock
