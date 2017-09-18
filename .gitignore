@@ -3,6 +3,8 @@
 *Release*
 */output/*
 */data/*
+*/Backup/*
+*/ipch/*
 *.ncb
 .metadata
 *.log
@@ -12,4 +14,8 @@ RemoteSystemsTempFiles
 .recommenders
 *.jpg
 *.dll
+*.htm
+*.vs
+*.db
+*.opendb
 

@@ -22,7 +22,7 @@ public class THSApi {
 	
 	static{
 		// add libpath
-		String yourPath = "lib";
+		String yourPath = ".";
 		System.setProperty("java.library.path", yourPath);
 		Field sysPath = null;
 		try {

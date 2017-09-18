@@ -455,6 +455,9 @@ int THSAPI_GetHoldStockList(std::list<HoldStock> & resultList)
 					
 
 					HoldStock cHoldStock;
+					cHoldStock.stockID = "000000";
+					cHoldStock.totalAmount = 0;
+					cHoldStock.curPrice = 0.0f;
 
 					std::list<std::string>::iterator it_col;
 					int indexCol = 0;
