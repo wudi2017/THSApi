@@ -18,7 +18,7 @@ import java.util.Properties;
  * 在代码src下,执行 javah stormstock.ori.capi.CATHSAccount
  */
  
-public class THSAPI {
+public class THSApi {
 	
 	static{
 		// add libpath

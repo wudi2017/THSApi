@@ -7,7 +7,7 @@ import java.util.Formatter;
 import java.util.List;
 
 import pers.di.thsapi.*;
-import pers.di.thsapi.THSAPI.*;
+import pers.di.thsapi.THSApi.*;
 
 public class TestCATHSAccount {
 
@@ -20,35 +20,35 @@ public class TestCATHSAccount {
 		
 		// 初始化测试
 		{
-			int iInitRet = THSAPI.initialize();
+			int iInitRet = THSApi.initialize();
 	        fmt.format("CATHSAccount.initialize err(%d)\n", iInitRet);
 		}
         
 		// 可用资金测试
 		{
 			ObjectContainer<Float> container = new ObjectContainer<Float>();
-	        int ret = THSAPI.getAvailableMoney(container);
+	        int ret = THSApi.getAvailableMoney(container);
 	        fmt.format("CATHSAccount.getAvailableMoney err(%d) AvailableMoney(%.2f)\n", ret, container.get());
 		}
 
 		// 总资产测试
 		{
 			ObjectContainer<Float> container = new ObjectContainer<Float>();
-	        int ret =  THSAPI.getTotalAssets(container);
+	        int ret =  THSApi.getTotalAssets(container);
 	        fmt.format("CATHSAccount.getTotalAssets err(%d) TotalAssets(%.2f)\n", ret, container.get());
 		}
 
 		// 所有股票总市值测试
 		{
 			ObjectContainer<Float> container = new ObjectContainer<Float>();
-	        int ret =  THSAPI.getAllStockMarketValue(container);
+	        int ret =  THSApi.getAllStockMarketValue(container);
 	        fmt.format("CATHSAccount.getAllStockMarketValue err(%d) AllStockMarketValue(%.2f)\n", ret, container.get());
 		}
 
 		// 持股列表测试
 		{
 			List<THSHoldStock> container = new ArrayList<THSHoldStock>();
-	        int ret = THSAPI.getHoldStockList(container);
+	        int ret = THSApi.getHoldStockList(container);
 	        fmt.format("CATHSAccount.getHoldStockList err(%d) resultList size(%d)\n", ret, container.size());
 	        for(int i=0;i<container.size();i++)
 	        {
@@ -83,25 +83,25 @@ public class TestCATHSAccount {
 				
 				{
 					ObjectContainer<Float> container = new ObjectContainer<Float>();
-			        int ret = THSAPI.getAvailableMoney(container);
+			        int ret = THSApi.getAvailableMoney(container);
 			        fmt.format("CATHSAccount.getAvailableMoney err(%d) AvailableMoney(%.2f)\n", ret, container.get());
 				}
 
 				{
 					ObjectContainer<Float> container = new ObjectContainer<Float>();
-			        int ret =  THSAPI.getTotalAssets(container);
+			        int ret =  THSApi.getTotalAssets(container);
 			        fmt.format("CATHSAccount.getTotalAssets err(%d) TotalAssets(%.2f)\n", ret, container.get());
 				}
 				
 				{
 					ObjectContainer<Float> container = new ObjectContainer<Float>();
-			        int ret =  THSAPI.getAllStockMarketValue(container);
+			        int ret =  THSApi.getAllStockMarketValue(container);
 			        fmt.format("CATHSAccount.getAllStockMarketValue err(%d) AllStockMarketValue(%.2f)\n", ret, container.get());
 				}
 				
 				{
 					List<THSHoldStock> container = new ArrayList<THSHoldStock>();
-			        int ret = THSAPI.getHoldStockList(container);
+			        int ret = THSApi.getHoldStockList(container);
 			        fmt.format("CATHSAccount.getHoldStockList err(%d) resultList size(%d)\n", ret, container.size());
 			        for(int i=0;i<container.size();i++)
 			        {
@@ -112,7 +112,7 @@ public class TestCATHSAccount {
 				}
 		        
 				try {
-					Thread.sleep(1000*60*5);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

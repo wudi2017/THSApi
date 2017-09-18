@@ -1,12 +1,15 @@
 */bin/*
-*/Debug/*
-*/Release/*
+*Debug*
+*Release*
 */output/*
 */data/*
 *.ncb
 .metadata
+*.log
 *.txt
 *log*.xml
 RemoteSystemsTempFiles
 .recommenders
 *.jpg
+*.dll
+
