@@ -51,7 +51,7 @@ public class THSApi {
 		}
 		
 		// load c++ API dll
-		String libraryName = "thscapi";
+		String libraryName = "thscapi_x86";
 		Properties properties = System.getProperties();
 		String jvmName = properties.getProperty("java.vm.name");
 		if(jvmName.contains("64"))
