@@ -74,6 +74,12 @@
     <ClInclude Include="jni\pers_di_thsapi_THSApi_TRANACT.h">
       <Filter>Header Files\jni</Filter>
     </ClInclude>
+    <ClInclude Include="jni\pers_di_thsapi_THSApi_CommissionOrder.h">
+      <Filter>Header Files\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="jni\pers_di_thsapi_THSApi_DealOrder.h">
+      <Filter>Header Files\jni</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

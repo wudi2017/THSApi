@@ -22,6 +22,7 @@
     <ProjectGuid>{A50F61B4-6565-41EC-AEB4-81FEBD2DB581}</ProjectGuid>
     <RootNamespace>THSCApi</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -71,6 +72,7 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files\Java\jdk1.8.0_111\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -135,6 +137,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_111\include;C:\Program Files\Java\jdk1.8.0_111\include\win32</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -185,6 +188,8 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="DCLib.h" />
     <ClInclude Include="jni\pers_di_thsapi_THSApi.h" />
+    <ClInclude Include="jni\pers_di_thsapi_THSApi_CommissionOrder.h" />
+    <ClInclude Include="jni\pers_di_thsapi_THSApi_DealOrder.h" />
     <ClInclude Include="jni\pers_di_thsapi_THSApi_HoldStock.h" />
     <ClInclude Include="jni\pers_di_thsapi_THSApi_ObjectContainer.h" />
     <ClInclude Include="jni\pers_di_thsapi_THSApi_TRANACT.h" />

@@ -174,15 +174,15 @@ int selectMasterTreeViewItem(HWND hTreeView, int index = -1)
 				TreeView_SelectItem(hTreeView, tvItem.hItem);
 				Sleep(100);
 
-				//// 当日委托
-				//tvItem.hItem = TreeView_GetNextSibling(hTreeView, tvItem.hItem);
-				//TreeView_SelectItem(hTreeView, tvItem.hItem);
-				//Sleep(100);
+				// 当日委托
+				tvItem.hItem = TreeView_GetNextSibling(hTreeView, tvItem.hItem);
+				TreeView_SelectItem(hTreeView, tvItem.hItem);
+				Sleep(100);
 
-				//// 当日成交
-				//tvItem.hItem = TreeView_GetNextSibling(hTreeView, tvItem.hItem);
-				//TreeView_SelectItem(hTreeView, tvItem.hItem);
-				//Sleep(100);
+				// 当日成交
+				tvItem.hItem = TreeView_GetNextSibling(hTreeView, tvItem.hItem);
+				TreeView_SelectItem(hTreeView, tvItem.hItem);
+				Sleep(100);
 
 				//// 历史委托
 				//tvItem.hItem = TreeView_GetNextSibling(hTreeView, tvItem.hItem);
@@ -213,10 +213,10 @@ int selectMasterTreeViewItem(HWND hTreeView, int index = -1)
 					return -1; // treeview不正确
 				}
 
-				//// 获得买入项目
-				//tvItem.hItem = TreeView_GetRoot(hTreeView);
-				//// 买入选择
-				//TreeView_SelectItem(hTreeView, tvItem.hItem);
+				// 获得买入项目
+				tvItem.hItem = TreeView_GetRoot(hTreeView);
+				// 买入选择
+				TreeView_SelectItem(hTreeView, tvItem.hItem);
 
 				Sleep(200);
 				return 0;
