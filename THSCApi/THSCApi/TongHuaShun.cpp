@@ -7,6 +7,7 @@
 #include "commctrl.h"
 #include "WinHandle.h"
 
+#define ENABLE_MOCK_DATA 0
 
 static DSyncObj s_syncObj;
 
@@ -108,26 +109,26 @@ int THSAPI_TongHuaShunInit()
 	TESTLOG("THSAPI_TongHuaShunInit# search HoldStockWin ok\n");
 
 	//// 初始化当日委托窗口句柄
-	//selectMasterTreeViewItem(s_hLeftTreeView, 3); 
-	//HWND hCommissionOrderWin = findCommissionOrderWin(hWnd);
-	//if (NULL == hCommissionOrderWin)
-	//{
-	//	TESTLOG("THSAPI_TongHuaShunInit# [ERROR] findCommissionOrderWin error\n");
-	//	return -40;
-	//}
-	//s_hCommissionOrderWin = hCommissionOrderWin;
-	//TESTLOG("THSAPI_TongHuaShunInit# search CommissionOrderWin ok\n");
+	selectMasterTreeViewItem(s_hLeftTreeView, 3); 
+	HWND hCommissionOrderWin = findCommissionOrderWin(hWnd);
+	if (NULL == hCommissionOrderWin)
+	{
+		TESTLOG("THSAPI_TongHuaShunInit# [ERROR] findCommissionOrderWin error\n");
+		return -40;
+	}
+	s_hCommissionOrderWin = hCommissionOrderWin;
+	TESTLOG("THSAPI_TongHuaShunInit# search CommissionOrderWin ok\n");
 
 	//// 初始化当日成交窗口句柄
-	//selectMasterTreeViewItem(s_hLeftTreeView, 4); 
-	//HWND hDealOrderWin = findDealOrderWin(hWnd);
-	//if (NULL == hDealOrderWin)
-	//{
-	//	TESTLOG("THSAPI_TongHuaShunInit# [ERROR] findDealOrderWin error\n");
-	//	return -50;
-	//}
-	//s_hDealOrderWin = hDealOrderWin;
-	//TESTLOG("THSAPI_TongHuaShunInit# search DealOrderWin ok\n");
+	selectMasterTreeViewItem(s_hLeftTreeView, 4); 
+	HWND hDealOrderWin = findDealOrderWin(hWnd);
+	if (NULL == hDealOrderWin)
+	{
+		TESTLOG("THSAPI_TongHuaShunInit# [ERROR] findDealOrderWin error\n");
+		return -50;
+	}
+	s_hDealOrderWin = hDealOrderWin;
+	TESTLOG("THSAPI_TongHuaShunInit# search DealOrderWin ok\n");
 
 	// 初始化买入窗口句柄
 	selectMasterTreeViewItem(s_hLeftTreeView, 0); 
@@ -503,6 +504,34 @@ int THSAPI_GetHoldStockList(std::list<HoldStock> & resultList)
 
 int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 {
+
+// mock data for test
+#if ENABLE_MOCK_DATA
+	{
+		CommissionOrder cCommissionOrder;
+		cCommissionOrder.time = "13:20:01";
+		cCommissionOrder.stockID = "600001";
+		cCommissionOrder.tranAct = TRANACT_BUY;
+		cCommissionOrder.commissionAmount = 1000;
+		cCommissionOrder.commissionPrice = 10.25f;
+		cCommissionOrder.dealAmount = 100;
+		cCommissionOrder.dealPrice = 10.11f;
+		resultList.push_back(cCommissionOrder);
+	}
+	{
+		CommissionOrder cCommissionOrder;
+		cCommissionOrder.time = "13:25:01";
+		cCommissionOrder.stockID = "600002";
+		cCommissionOrder.tranAct = TRANACT_SELL;
+		cCommissionOrder.commissionAmount = 2000;
+		cCommissionOrder.commissionPrice = 2.33f;
+		cCommissionOrder.dealAmount = 200;
+		cCommissionOrder.dealPrice = 2.11f;
+		resultList.push_back(cCommissionOrder);
+	}
+	return 0;
+#endif
+
 	DAutoSync sync(s_syncObj);
 	FlushData();
 
@@ -664,6 +693,29 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 
 int THSAPI_GetDealOrderList(std::list<DealOrder> & resultList)
 {
+	// mock data for test
+#if ENABLE_MOCK_DATA
+	{
+		DealOrder cDealOrder;
+		cDealOrder.time = "14:20:01";
+		cDealOrder.stockID = "300001";
+		cDealOrder.tranAct = TRANACT_BUY;
+		cDealOrder.dealAmount = 500;
+		cDealOrder.dealPrice = 10.11f;
+		resultList.push_back(cDealOrder);
+	}
+	{
+		DealOrder cDealOrder;
+		cDealOrder.time = "14:25:01";
+		cDealOrder.stockID = "300002";
+		cDealOrder.tranAct = TRANACT_SELL;
+		cDealOrder.dealAmount = 800;
+		cDealOrder.dealPrice = 2.11f;
+		resultList.push_back(cDealOrder);
+	}
+	return 0;
+#endif
+
 	DAutoSync sync(s_syncObj);
 	FlushData();
 

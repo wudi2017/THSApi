@@ -115,6 +115,24 @@ public class THSApi {
 		public float curPrice; // 当前价
 	}
 	
+	public static class CommissionOrder {
+		public String time; // 时间
+		public String stockID; // 股票ID
+		public TRANACT tranAct; // 操作
+		public int commissionAmount; //委托数量
+		public float commissionPrice; //委托价格
+		public int dealAmount; // 成交数量
+		public float dealPrice; // 成交均价
+	}
+
+	public static class DealOrder
+	{
+		public String time; // 时间
+		public String stockID; // 股票ID
+		public TRANACT tranAct; // 交易动作
+		public int dealAmount; // 成交数量
+		public float dealPrice; // 成交均价
+	};
 	
 	/*
 	 * TongHuaShun Initialize
@@ -147,6 +165,18 @@ public class THSApi {
 	 * 获取持股列表
 	 */
 	public static native int getHoldStockList(List<HoldStock> container);
+	
+	/*
+	 * getCommissionOrderList
+	 * 获取委托列表
+	 */
+	public static native int getCommissionOrderList(List<CommissionOrder> container);
+	
+	/*
+	 * getDealOrderList
+	 * 获取成交列表
+	 */
+	public static native int getDealOrderList(List<DealOrder> container);
 	
 	/*
 	 * buyStock

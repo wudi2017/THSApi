@@ -49,6 +49,22 @@ JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_getHoldStockList
 
 /*
  * Class:     pers_di_thsapi_THSApi
+ * Method:    getCommissionOrderList
+ * Signature: (Ljava/util/List;)I
+ */
+JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_getCommissionOrderList
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     pers_di_thsapi_THSApi
+ * Method:    getDealOrderList
+ * Signature: (Ljava/util/List;)I
+ */
+JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_getDealOrderList
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     pers_di_thsapi_THSApi
  * Method:    buyStock
  * Signature: (Ljava/lang/String;IF)I
  */

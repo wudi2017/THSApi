@@ -340,6 +340,259 @@ JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_getHoldStockList
 
 /*
 * Class:     pers_di_thsapi_THSApi
+* Method:    getCommissionOrderList
+* Signature: (Ljava/util/List;)I
+*/
+JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_getCommissionOrderList
+(JNIEnv * env, jclass cls, jobject obj)
+{
+	TESTLOG("Java_pers_di_thsapi_THSApi_getCommissionOrderList\n");
+
+	if (NULL == obj)
+	{
+		return -1;
+	}
+
+	int err = 0;
+	std::list<CommissionOrder> cResultList;
+	// frequency limit
+	{
+		static int s_lastErr = 0;
+		static std::list<CommissionOrder> s_lastData;
+		static DWORD s_dwLastCall = 0;
+		DWORD dwCurTC = ::GetTickCount();
+		DWORD dwPeriod = dwCurTC - s_dwLastCall;
+		if (dwPeriod > 1000*10)
+		{
+			s_lastErr = THSAPI_GetCommissionOrderList(s_lastData);
+			s_dwLastCall = dwCurTC;
+		}
+		err = s_lastErr;
+		cResultList = s_lastData;
+	}
+	TESTLOG("   THSAPI_GetCommissionOrderList err(%d) cResultList size(%d)\n",err,cResultList.size());
+
+	jclass jcls_ArrayList = env->GetObjectClass(obj);
+	if (NULL == jcls_ArrayList)
+	{
+		TESTLOG("   jcls_ArrayList ERROR\n");
+	}
+	jmethodID mid_ArrayList_add = env->GetMethodID(jcls_ArrayList, "add", "(Ljava/lang/Object;)Z");
+	if (NULL == mid_ArrayList_add)
+	{
+		TESTLOG("   mid_ArrayList_add ERROR\n");
+	}
+
+	jclass jcls_CommissionOrder = env->FindClass("pers/di/thsapi/THSApi$CommissionOrder");
+	if (NULL == jcls_CommissionOrder)
+	{
+		TESTLOG("   jcls_CommissionOrder ERROR\n");
+	}
+	jmethodID mid_CommissionOrder_init = env->GetMethodID(jcls_CommissionOrder, "<init>", "()V");
+	if (NULL == mid_CommissionOrder_init)
+	{
+		TESTLOG("   mid_HoldStock_init ERROR\n");
+	}
+
+	std::list<CommissionOrder>::iterator it;
+	for (it = cResultList.begin(); it != cResultList.end(); it++)
+	{
+		CommissionOrder cCommissionOrder = *it;
+		jobject jobj_CommissionOrder = env->NewObject(jcls_CommissionOrder, mid_CommissionOrder_init);
+		if (NULL == jobj_CommissionOrder)
+		{
+			TESTLOG("   jobj_CommissionOrder ERROR\n");
+		}
+
+		jfieldID fid_time = env->GetFieldID(jcls_CommissionOrder, "time", "Ljava/lang/String;");
+		if (NULL == fid_time)
+		{
+			TESTLOG("   fid_time ERROR\n");
+		}
+		jstring jstr_time = env->NewStringUTF(cCommissionOrder.time.c_str());
+		env->SetObjectField(jobj_CommissionOrder, fid_time, jstr_time);
+
+		jfieldID fid_stockID = env->GetFieldID(jcls_CommissionOrder, "stockID", "Ljava/lang/String;");
+		if (NULL == fid_stockID)
+		{
+			TESTLOG("   fid_stockID ERROR\n");
+		}
+		jstring jstr_stockID = env->NewStringUTF(cCommissionOrder.stockID.c_str());
+		env->SetObjectField(jobj_CommissionOrder, fid_stockID, jstr_stockID);
+
+		jfieldID fid_tranAct = env->GetFieldID(jcls_CommissionOrder, "tranAct", "Lpers/di/thsapi/THSApi$TRANACT;");
+		if (NULL == fid_tranAct)
+		{
+			TESTLOG("   fid_tranAct ERROR\n");
+		}
+		jclass jcls_TRANACT = env->FindClass("pers/di/thsapi/THSApi$TRANACT");
+		jfieldID fid_BUY    = env->GetStaticFieldID(jcls_TRANACT, "BUY", "Lpers/di/thsapi/THSApi$TRANACT;");
+		jfieldID fid_SELL   = env->GetStaticFieldID(jcls_TRANACT, "SELL", "Lpers/di/thsapi/THSApi$TRANACT;");
+		jobject jobj_TranAct = env->GetStaticObjectField(jcls_TRANACT, fid_BUY);
+		if (TRANACT_SELL == cCommissionOrder.tranAct)
+		{
+			jobj_TranAct = env->GetStaticObjectField(jcls_TRANACT, fid_SELL);
+		} 
+		env->SetObjectField(jobj_CommissionOrder, fid_tranAct, jobj_TranAct);
+
+		jfieldID fid_commissionAmount = env->GetFieldID(jcls_CommissionOrder, "commissionAmount", "I");
+		if (NULL == fid_commissionAmount)
+		{
+			TESTLOG("   fid_commissionAmount ERROR\n");
+		}
+		jint jint_fid_commissionAmount = cCommissionOrder.commissionAmount;
+		env->SetIntField(jobj_CommissionOrder, fid_commissionAmount, jint_fid_commissionAmount);
+
+		jfieldID fid_commissionPrice = env->GetFieldID(jcls_CommissionOrder, "commissionPrice", "F");
+		if (NULL == fid_commissionPrice)
+		{
+			TESTLOG("   fid_commissionPrice ERROR\n");
+		}
+		jfloat jfloat_commissionPrice = cCommissionOrder.commissionPrice;
+		env->SetFloatField(jobj_CommissionOrder, fid_commissionPrice, jfloat_commissionPrice);
+
+		jfieldID fid_dealAmount = env->GetFieldID(jcls_CommissionOrder, "dealAmount", "I");
+		if (NULL == fid_dealAmount)
+		{
+			TESTLOG("   fid_dealAmount ERROR\n");
+		}
+		jint jint_fid_dealAmount = cCommissionOrder.dealAmount;
+		env->SetIntField(jobj_CommissionOrder, fid_dealAmount, jint_fid_dealAmount);
+
+		jfieldID fid_dealPrice = env->GetFieldID(jcls_CommissionOrder, "dealPrice", "F");
+		if (NULL == fid_dealPrice)
+		{
+			TESTLOG("   fid_dealPrice ERROR\n");
+		}
+		jfloat jfloat_dealPrice = cCommissionOrder.dealPrice;
+		env->SetFloatField(jobj_CommissionOrder, fid_dealPrice, jfloat_dealPrice);
+
+		env->CallBooleanMethod(obj, mid_ArrayList_add, jobj_CommissionOrder);
+	}
+
+	return 0;
+}
+
+/*
+* Class:     pers_di_thsapi_THSApi
+* Method:    getDealOrderList
+* Signature: (Ljava/util/List;)I
+*/
+JNIEXPORT jint JNICALL Java_pers_di_thsapi_THSApi_getDealOrderList
+(JNIEnv * env, jclass cls, jobject obj)
+{
+	TESTLOG("Java_pers_di_thsapi_THSApi_getDealOrderList\n");
+
+	if (NULL == obj)
+	{
+		return -1;
+	}
+
+	int err = 0;
+	std::list<DealOrder> cResultList;
+	// frequency limit
+	{
+		static int s_lastErr = 0;
+		static std::list<DealOrder> s_lastData;
+		static DWORD s_dwLastCall = 0;
+		DWORD dwCurTC = ::GetTickCount();
+		DWORD dwPeriod = dwCurTC - s_dwLastCall;
+		if (dwPeriod > 1000*10)
+		{
+			s_lastErr = THSAPI_GetDealOrderList(s_lastData);
+			s_dwLastCall = dwCurTC;
+		}
+		err = s_lastErr;
+		cResultList = s_lastData;
+	}
+	TESTLOG("   THSAPI_GetDealOrderList err(%d) cResultList size(%d)\n",err,cResultList.size());
+
+	jclass jcls_ArrayList = env->GetObjectClass(obj);
+	if (NULL == jcls_ArrayList)
+	{
+		TESTLOG("   jcls_ArrayList ERROR\n");
+	}
+	jmethodID mid_ArrayList_add = env->GetMethodID(jcls_ArrayList, "add", "(Ljava/lang/Object;)Z");
+	if (NULL == mid_ArrayList_add)
+	{
+		TESTLOG("   mid_ArrayList_add ERROR\n");
+	}
+
+	jclass jcls_DealOrder = env->FindClass("pers/di/thsapi/THSApi$DealOrder");
+	if (NULL == jcls_DealOrder)
+	{
+		TESTLOG("   jcls_DealOrder ERROR\n");
+	}
+	jmethodID mid_DealOrder_init = env->GetMethodID(jcls_DealOrder, "<init>", "()V");
+	if (NULL == mid_DealOrder_init)
+	{
+		TESTLOG("   mid_DealOrder_init ERROR\n");
+	}
+
+	std::list<DealOrder>::iterator it;
+	for (it = cResultList.begin(); it != cResultList.end(); it++)
+	{
+		DealOrder cDealOrder = *it;
+		jobject jobj_DealOrder = env->NewObject(jcls_DealOrder, mid_DealOrder_init);
+		if (NULL == jobj_DealOrder)
+		{
+			TESTLOG("   jobj_DealOrder ERROR\n");
+		}
+
+		jfieldID fid_time = env->GetFieldID(jcls_DealOrder, "time", "Ljava/lang/String;");
+		if (NULL == fid_time)
+		{
+			TESTLOG("   fid_time ERROR\n");
+		}
+		jstring jstr_time = env->NewStringUTF(cDealOrder.time.c_str());
+		env->SetObjectField(jobj_DealOrder, fid_time, jstr_time);
+
+		jfieldID fid_stockID = env->GetFieldID(jcls_DealOrder, "stockID", "Ljava/lang/String;");
+		if (NULL == fid_stockID)
+		{
+			TESTLOG("   fid_stockID ERROR\n");
+		}
+		jstring jstr_stockID = env->NewStringUTF(cDealOrder.stockID.c_str());
+		env->SetObjectField(jobj_DealOrder, fid_stockID, jstr_stockID);
+
+		jfieldID fid_tranAct = env->GetFieldID(jcls_DealOrder, "tranAct", "Lpers/di/thsapi/THSApi$TRANACT;");
+		if (NULL == fid_tranAct)
+		{
+			TESTLOG("   fid_tranAct ERROR\n");
+		}
+		jclass jcls_TRANACT = env->FindClass("pers/di/thsapi/THSApi$TRANACT");
+		jfieldID fid_BUY    = env->GetStaticFieldID(jcls_TRANACT, "BUY", "Lpers/di/thsapi/THSApi$TRANACT;");
+		jfieldID fid_SELL   = env->GetStaticFieldID(jcls_TRANACT, "SELL", "Lpers/di/thsapi/THSApi$TRANACT;");
+		jobject jobj_TranAct = env->GetStaticObjectField(jcls_TRANACT, fid_BUY);
+		if (TRANACT_SELL == cDealOrder.tranAct)
+		{
+			jobj_TranAct = env->GetStaticObjectField(jcls_TRANACT, fid_SELL);
+		} 
+		env->SetObjectField(jobj_DealOrder, fid_tranAct, jobj_TranAct);
+
+		jfieldID fid_dealAmount = env->GetFieldID(jcls_DealOrder, "dealAmount", "I");
+		if (NULL == fid_dealAmount)
+		{
+			TESTLOG("   fid_dealAmount ERROR\n");
+		}
+		jint jint_fid_dealAmount = cDealOrder.dealAmount;
+		env->SetIntField(jobj_DealOrder, fid_dealAmount, jint_fid_dealAmount);
+
+		jfieldID fid_dealPrice = env->GetFieldID(jcls_DealOrder, "dealPrice", "F");
+		if (NULL == fid_dealPrice)
+		{
+			TESTLOG("   fid_dealPrice ERROR\n");
+		}
+		jfloat jfloat_dealPrice = cDealOrder.dealPrice;
+		env->SetFloatField(jobj_DealOrder, fid_dealPrice, jfloat_dealPrice);
+
+		env->CallBooleanMethod(obj, mid_ArrayList_add, jobj_DealOrder);
+	}
+	return 0;
+}
+
+/*
+* Class:     pers_di_thsapi_THSApi
 * Method:    buyStock
 * Signature: (Ljava/lang/String;IF)I
 */

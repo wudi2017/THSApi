@@ -54,131 +54,134 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	printf("### Main Begin\n");
 
-	int err = -1;
+	int iInitErr = -1;
 	////////////////////////////////////////////////////////////////////////// -> test THSAPI_TongHuaShunInit
 	{
 		for (int i=0; i<1; i++)
 		{
-			err = THSAPI_TongHuaShunInit();
-			printf("[TEST] THSAPI_TongHuaShunInit Error[%d]\n", err);
+			iInitErr = THSAPI_TongHuaShunInit();
+			printf("[TEST] THSAPI_TongHuaShunInit Error[%d]\n", iInitErr);
 		}
 	}
 
-	if (err >=0)
+	if (iInitErr >=0)
 	{
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_GetAvailableMoney
-		for (int i=0; i<1; i++)
+		for (int iTestTimes=0; iTestTimes<100; iTestTimes++)
 		{
-			float fAvailableMoney = 0;
-			err = THSAPI_GetAvailableMoney(fAvailableMoney);
-			printf("[TEST] THSAPI_GetAvailableMoney Error[%d] AvailableMoney[%f]\n", err, fAvailableMoney);
-		}
+			int err = 0;
 
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_GetTotalAssets
-		for (int i=0; i<1; i++)
-		{
-			float fTotalAssetsFirst = 0;
-			err = THSAPI_GetTotalAssets(fTotalAssetsFirst);
-			printf("[TEST] THSAPI_GetTotalAssets Error[%d] TotalAssets[%f]\n", err, fTotalAssetsFirst);
-		}
+			printf("\n[TEST] TestTimes %d ----------------- >>>>>>>>>>>>>>>>>>>>>>>\n", iTestTimes);
 
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_GetAllStockMarketValue
-		for (int i=0; i<1; i++)
-		{
-			float fStockMarketValue = 0;
-			err = THSAPI_GetAllStockMarketValue(fStockMarketValue);
-			printf("[TEST] THSAPI_GetStockMarketValue Error[%d] AllStockMarketValue[%f]\n", err, fStockMarketValue);
-		}
-
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_BuyStock
-		for (int i=0; i<0; i++)
-		{
-			err = THSAPI_BuyStock("601988",100,1.00);
-			printf("[TEST] THSAPI_BuyStock Error[%d]\n", err);
-		}
-
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_SellStock
-		for (int i = 0; i<0; i++)
-		{
-			err = THSAPI_SellStock("601988", 100, 4.01f);
-			printf("[TEST] THSAPI_SellStock Error[%d]\n", err);
-		}
-
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_GetHoldStockList
-		{
-			std::list<HoldStock> cResultList;
-			for (int i=0; i<10000; i++)
+			// -> test THSAPI_GetAvailableMoney
 			{
-				err = THSAPI_GetHoldStockList(cResultList);
-				printf("[TEST] THSAPI_GetHoldStockList Error[%d]\n", err);
-				printf("[TEST] THSAPI_GetHoldStockList list size %d\n", cResultList.size());
-				std::list<HoldStock>::iterator it;
-				for (it = cResultList.begin(); it != cResultList.end(); it++)
-				{
-					HoldStock cHoldStock = *it;
-					printf("    {%s %d %d %.3f %.3f %.3f}\n",
-						cHoldStock.stockID.c_str(),
-						cHoldStock.totalAmount,
-						cHoldStock.availableAmount,
-						cHoldStock.refProfitLoss,
-						cHoldStock.refPrimeCostPrice,
-						cHoldStock.curPrice);
-				}
-				Sleep(3000);
+				float fAvailableMoney = 0;
+				err = THSAPI_GetAvailableMoney(fAvailableMoney);
+				printf("[TEST] THSAPI_GetAvailableMoney Error[%d] AvailableMoney[%f]\n", err, fAvailableMoney);
 			}
 
+			// -> test THSAPI_GetTotalAssets
+			{
+				float fTotalAssetsFirst = 0;
+				err = THSAPI_GetTotalAssets(fTotalAssetsFirst);
+				printf("[TEST] THSAPI_GetTotalAssets Error[%d] TotalAssets[%f]\n", err, fTotalAssetsFirst);
+			}
+
+			// -> test THSAPI_GetAllStockMarketValue
+			{
+				float fStockMarketValue = 0;
+				err = THSAPI_GetAllStockMarketValue(fStockMarketValue);
+				printf("[TEST] THSAPI_GetStockMarketValue Error[%d] AllStockMarketValue[%f]\n", err, fStockMarketValue);
+			}
+
+			// -> test THSAPI_BuyStock
+			{
+				//err = THSAPI_BuyStock("601988",100,1.00);
+				//printf("[TEST] THSAPI_BuyStock Error[%d]\n", err);
+			}
+
+			// -> test THSAPI_SellStock
+			{
+				//err = THSAPI_SellStock("601988", 100, 4.01f);
+				//printf("[TEST] THSAPI_SellStock Error[%d]\n", err);
+			}
+
+			// -> test THSAPI_GetHoldStockList
+			{
+				std::list<HoldStock> cResultList;
+				for (int i=0; i<1; i++)
+				{
+					err = THSAPI_GetHoldStockList(cResultList);
+					printf("[TEST] THSAPI_GetHoldStockList Error[%d]\n", err);
+					printf("[TEST] THSAPI_GetHoldStockList list size %d\n", cResultList.size());
+					std::list<HoldStock>::iterator it;
+					for (it = cResultList.begin(); it != cResultList.end(); it++)
+					{
+						HoldStock cHoldStock = *it;
+						printf("    {%s %d %d %.3f %.3f %.3f}\n",
+							cHoldStock.stockID.c_str(),
+							cHoldStock.totalAmount,
+							cHoldStock.availableAmount,
+							cHoldStock.refProfitLoss,
+							cHoldStock.refPrimeCostPrice,
+							cHoldStock.curPrice);
+					}
+				}
+			}
+			Sleep(500);
+
+			// -> test THSAPI_GetCommissionOrderList
+			{
+				std::list<CommissionOrder> cResultList;
+				for (int i=0; i<1; i++)
+				{
+					err = THSAPI_GetCommissionOrderList(cResultList);
+					printf("[TEST] THSAPI_GetCommissionOrderList Error[%d]\n", err);
+					printf("[TEST] THSAPI_GetCommissionOrderList list size %d\n", cResultList.size());
+				}
+				
+				std::list<CommissionOrder>::iterator it;
+				for (it = cResultList.begin(); it != cResultList.end(); it++)
+				{
+					CommissionOrder cCommissionOrder = *it;
+					printf("    {%s %s %d %d %.3f %d %.3f}\n",
+						cCommissionOrder.time.c_str(),
+						cCommissionOrder.stockID.c_str(),
+						cCommissionOrder.tranAct,
+						cCommissionOrder.commissionAmount,
+						cCommissionOrder.commissionPrice,
+						cCommissionOrder.dealAmount,
+						cCommissionOrder.dealPrice);
+				}
+			}
+			Sleep(500);
+
+
+			// -> test THSAPI_GetDealOrderList
+			{
+				std::list<DealOrder> cResultList;
+				for (int i=0; i<1; i++)
+				{
+					err = THSAPI_GetDealOrderList(cResultList);
+					printf("[TEST] THSAPI_GetDealOrderList Error[%d]\n", err);
+					printf("[TEST] THSAPI_GetDealOrderList list size %d\n", cResultList.size());
+					std::list<DealOrder>::iterator it;
+					for (it = cResultList.begin(); it != cResultList.end(); it++)
+					{
+						DealOrder cDealOrder = *it;
+						printf("    {%s %s %d %d %.3f}\n",
+							cDealOrder.time.c_str(),
+							cDealOrder.stockID.c_str(),
+							cDealOrder.tranAct,
+							cDealOrder.dealAmount,
+							cDealOrder.dealPrice);
+					}
+				}
+			}
+			Sleep(500);
 		}
 
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_GetCommissionOrderList
-		//{
-		//	std::list<CommissionOrder> cResultList;
-		//	for (int i=0; i<1; i++)
-		//	{
-		//		err = THSAPI_GetCommissionOrderList(cResultList);
-		//		printf("[TEST] THSAPI_GetCommissionOrderList Error[%d]\n", err);
-		//		printf("[TEST] THSAPI_GetCommissionOrderList list size %d\n", cResultList.size());
-		//	}
-		//	
-		//	std::list<CommissionOrder>::iterator it;
-		//	for (it = cResultList.begin(); it != cResultList.end(); it++)
-		//	{
-		//		CommissionOrder cCommissionOrder = *it;
-		//		printf("    {%s %s %d %d %.3f %d %.3f}\n",
-		//			cCommissionOrder.time.c_str(),
-		//			cCommissionOrder.stockID.c_str(),
-		//			cCommissionOrder.tranAct,
-		//			cCommissionOrder.commissionAmount,
-		//			cCommissionOrder.commissionPrice,
-		//			cCommissionOrder.dealAmount,
-		//			cCommissionOrder.dealPrice);
-		//	}
-		//}
-
-		////////////////////////////////////////////////////////////////////////// -> test THSAPI_GetDealOrderList
-		//{
-		//	std::list<DealOrder> cResultList;
-		//	for (int i=0; i<1; i++)
-		//	{
-		//		err = THSAPI_GetDealOrderList(cResultList);
-		//		printf("[TEST] THSAPI_GetDealOrderList Error[%d]\n", err);
-		//		printf("[TEST] THSAPI_GetDealOrderList list size %d\n", cResultList.size());
-		//		std::list<DealOrder>::iterator it;
-		//		for (it = cResultList.begin(); it != cResultList.end(); it++)
-		//		{
-		//			DealOrder cDealOrder = *it;
-		//			printf("    {%s %s %d %d %.3f}\n",
-		//				cDealOrder.time.c_str(),
-		//				cDealOrder.stockID.c_str(),
-		//				cDealOrder.tranAct,
-		//				cDealOrder.dealAmount,
-		//				cDealOrder.dealPrice);
-		//		}
-		//	}
-
-		//}
-
-	}
-	//////////////////////////////////////////////////////////////////////////
+	} // if (iInitErr >=0)
+	
 	printf("### Main End\n");
 
 	system("pause");
