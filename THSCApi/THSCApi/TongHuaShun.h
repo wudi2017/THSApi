@@ -45,8 +45,15 @@ struct DealOrder
 	float dealPrice; // 成交价格
 };
 
-// flush, max call frequency 30 sec
-int FlushData();
+// etype = THSDATATYPE_ALL maxflush interval = 30s
+enum THSDATATYPE
+{
+	THSDATATYPE_ALL,
+	THSDATATYPE_MONEYSTOCK, // 资金股票
+	THSDATATYPE_COMMISSION, // 当日委托
+	THSDATATYPE_DEAL,       // 当日成交
+};
+int FlushData(THSDATATYPE etype);
 
 /////////////////////////////////////////////////////////////////////////
 

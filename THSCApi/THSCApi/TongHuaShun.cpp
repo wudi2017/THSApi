@@ -36,19 +36,64 @@ public:
 };
 static FlushingTimer s_flushingTimer;
 
-int FlushData()
+int FlushData(THSDATATYPE etype = THSDATATYPE_ALL)
 {
 	DAutoSync sync(s_syncObj);
 
-	static DWORD dwLastFlush = 0;
-	DWORD dwCurTC = ::GetTickCount();
-	DWORD dwPeriod = dwCurTC - dwLastFlush;
+	/* 
+	* -1:all
+	* 0：买入
+	* 1：卖出
+	* 2：资金股票
+	* 3：当日委托
+	* 4：当日成交
+	*/
+	int winIndex = -1;
 
-	if (dwPeriod > 1000*30)
+	switch (etype)
 	{
-		selectMasterTreeViewItem(s_hLeftTreeView, -1);
-		Flush_F5(1000);
-		dwLastFlush = dwCurTC;
+	case THSDATATYPE_ALL:
+		winIndex = -1;
+		break;
+	case THSDATATYPE_MONEYSTOCK:
+		winIndex = 2;
+		break;
+	case THSDATATYPE_COMMISSION:
+		winIndex = 3;
+		break;
+	case THSDATATYPE_DEAL:
+		winIndex = 4;
+		break;
+	default:
+		winIndex = 2;
+		break;
+	}
+
+	if (-1 == winIndex)
+	{
+		static DWORD dwLastFlush_all = 0;
+		DWORD dwCurTC = ::GetTickCount();
+		DWORD dwPeriod = dwCurTC - dwLastFlush_all;
+
+		if (dwPeriod > 1000*30)
+		{
+			selectMasterTreeViewItem(s_hLeftTreeView, -1);
+			Flush_F5(1000);
+			dwLastFlush_all = dwCurTC;
+		}
+	}
+	else
+	{
+		static DWORD dwLastFlush = 0;
+		DWORD dwCurTC = ::GetTickCount();
+		DWORD dwPeriod = dwCurTC - dwLastFlush;
+
+		if (dwPeriod > 1000*5)
+		{
+			selectMasterTreeViewItem(s_hLeftTreeView, winIndex);
+			Flush_F5(1000);
+			dwLastFlush = dwCurTC;
+		}
 	}
 
 	return 0;
@@ -180,7 +225,7 @@ int THSAPI_GetAvailableMoney(float & availableMoney)
 		THSAPI_TongHuaShunInit();
 	}
 
-	FlushData();
+	FlushData(THSDATATYPE_MONEYSTOCK);
 
 	TESTLOG("THSAPI_GetAvailableMoney#\n");
 	if (!s_initFLag)
@@ -237,7 +282,7 @@ int THSAPI_GetTotalAssets(float & totalAssets)
 		THSAPI_TongHuaShunInit();
 	}
 
-	FlushData();
+	FlushData(THSDATATYPE_MONEYSTOCK);
 
 	TESTLOG("THSAPI_GetTotalAssets#\n");
 	if (!s_initFLag)
@@ -294,7 +339,7 @@ int THSAPI_GetAllStockMarketValue(float & allStockMarketValue)
 		THSAPI_TongHuaShunInit();
 	}
 
-	FlushData();
+	FlushData(THSDATATYPE_MONEYSTOCK);
 
 	TESTLOG("THSAPI_GetAllStockMarketValue#\n");
 	if (!s_initFLag)
@@ -351,7 +396,7 @@ int THSAPI_GetHoldStockList(std::list<HoldStock> & resultList)
 		THSAPI_TongHuaShunInit();
 	}
 
-	FlushData();
+	FlushData(THSDATATYPE_MONEYSTOCK);
 
 	if (!s_initFLag)
 	{
@@ -533,7 +578,7 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 #endif
 
 	DAutoSync sync(s_syncObj);
-	FlushData();
+	FlushData(THSDATATYPE_COMMISSION);
 
 	if (!s_initFLag)
 	{
@@ -571,6 +616,7 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 			int iCol_time = -1;
 			int iCol_stockID = -1;
 			int iCol_tranAct = -1;
+			int iCol_note = -1;
 			int iCol_commissionAmount = -1;
 			int iCol_commissionPrice = -1;
 			int iCol_dealAmount = -1;
@@ -592,6 +638,10 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 					if (0 == cell.compare("操作"))
 					{
 						iCol_tranAct = indexCol;
+					}
+					if (0 == cell.compare("备注"))
+					{
+						iCol_note = indexCol;
 					}
 					if (0 == cell.compare("委托数量"))
 					{
@@ -615,6 +665,7 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 			if (-1==iCol_time 
 				|| -1==iCol_stockID
 				|| -1==iCol_tranAct
+				|| -1==iCol_note
 				|| -1 == iCol_commissionAmount
 				|| -1==iCol_commissionPrice
 				|| -1==iCol_dealAmount
@@ -638,6 +689,7 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 
 					CommissionOrder cCommissionOrder;
 
+					bool bCommissionValid = true;
 					std::list<std::string>::iterator it_col;
 					int indexCol = 0;
 					for (it_col = row_cols.begin(); it_col != row_cols.end(); it_col++,indexCol++)
@@ -663,6 +715,13 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 								cCommissionOrder.tranAct = TRANACT_SELL;
 							}
 						}
+						if (indexCol == iCol_note)
+						{
+							if (cell.compare("已撤") == 0)
+							{
+								bCommissionValid = false;
+							}
+						}
 						if (indexCol == iCol_commissionAmount)
 						{
 							cCommissionOrder.commissionAmount = atoi(cell.c_str());
@@ -681,7 +740,10 @@ int THSAPI_GetCommissionOrderList(std::list<CommissionOrder> & resultList)
 						}
 					}
 
-					resultList.push_back(cCommissionOrder);
+					if (bCommissionValid)
+					{
+						resultList.push_back(cCommissionOrder);
+					}
 				}
 			}
 
@@ -717,7 +779,7 @@ int THSAPI_GetDealOrderList(std::list<DealOrder> & resultList)
 #endif
 
 	DAutoSync sync(s_syncObj);
-	FlushData();
+	FlushData(THSDATATYPE_DEAL);
 
 	if (!s_initFLag)
 	{
