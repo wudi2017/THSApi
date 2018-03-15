@@ -522,7 +522,7 @@ HWND findCommissionOrderWin(HWND hWnd)
 
 		if (0 == strcmp(szClassL1, "AfxMDIFrame42s"))
 		{
-			TESTLOG("findCommissionOrderWin# hWndL1 = 0x%x szClassL1[%s] szWinTextL1[%s]\n",hChildL1, szClassL1,szWinTextL1);
+			//TESTLOG("findCommissionOrderWin# hWndL1 = 0x%x szClassL1[%s] szWinTextL1[%s]\n",hChildL1, szClassL1,szWinTextL1);
 
 			HWND hChildL2 = NULL;
 			for(;;) {
@@ -535,7 +535,7 @@ HWND findCommissionOrderWin(HWND hWnd)
 				GetWindowText(hChildL2, szTitleL2, sizeof(szTitleL2) / sizeof(char)); 
 				GetClassName(hChildL2, szClassL2, sizeof(szClassL2) / sizeof(char));
 				GetWindowText(hChildL2, szWinTextL2, sizeof(szWinTextL2) / sizeof(char));
-				TESTLOG("findCommissionOrderWin# hWndL2 = 0x%x szClassL2[%s] szWinTextL2[%s]\n",hChildL2, szClassL2,szWinTextL2);
+				//TESTLOG("findCommissionOrderWin# hWndL2 = 0x%x szClassL2[%s] szWinTextL2[%s]\n",hChildL2, szClassL2,szWinTextL2);
 
 				HWND hChild_HexinScrollWnd = NULL;
 				HWND hChildL3 = NULL;
@@ -612,8 +612,14 @@ HWND findCommissionOrderWin(HWND hWnd)
 											bool bCtrlV = getCtrlVFormWin(hChildL5,buf);
 											if(buf.length()>30)
 											{
-												int pos=buf.find("委托时间");
-												if (bCtrlV && pos >= 0 && pos<20)
+												int pos1=buf.find("委托时间");
+												int pos2=buf.find("委托数量");
+												int pos3=buf.find("委托价格");
+												//TESTLOG("bCtrlV=%d；CtrlV:%s；CheckPos=%d，%d，%d", bCtrlV, buf.c_str(),pos1,pos2,pos3);
+												if (bCtrlV 
+													&& pos1 >= 0 && pos1<512
+													&& pos2 >= 0 && pos2<512
+													&& pos3 >= 0 && pos3<512)
 												{
 													return hChildL5;
 												}
@@ -650,7 +656,7 @@ HWND findDealOrderWin(HWND hWnd)
 
 		if (0 == strcmp(szClassL1, "AfxMDIFrame42s"))
 		{
-			TESTLOG("findCommissionOrderWin# hWndL1 = 0x%x szClassL1[%s] szWinTextL1[%s]\n",hChildL1, szClassL1,szWinTextL1);
+			//TESTLOG("findCommissionOrderWin# hWndL1 = 0x%x szClassL1[%s] szWinTextL1[%s]\n",hChildL1, szClassL1,szWinTextL1);
 
 			HWND hChildL2 = NULL;
 			for(;;) {
@@ -663,7 +669,7 @@ HWND findDealOrderWin(HWND hWnd)
 				GetWindowText(hChildL2, szTitleL2, sizeof(szTitleL2) / sizeof(char)); 
 				GetClassName(hChildL2, szClassL2, sizeof(szClassL2) / sizeof(char));
 				GetWindowText(hChildL2, szWinTextL2, sizeof(szWinTextL2) / sizeof(char));
-				TESTLOG("findCommissionOrderWin# hWndL2 = 0x%x szClassL2[%s] szWinTextL2[%s]\n",hChildL2, szClassL2,szWinTextL2);
+				//TESTLOG("findCommissionOrderWin# hWndL2 = 0x%x szClassL2[%s] szWinTextL2[%s]\n",hChildL2, szClassL2,szWinTextL2);
 
 				HWND hChild_HexinScrollWnd = NULL;
 				HWND hChildL3 = NULL;
@@ -740,8 +746,15 @@ HWND findDealOrderWin(HWND hWnd)
 											bool bCtrlV = getCtrlVFormWin(hChildL5,buf);
 											if(buf.length()>30)
 											{
-												int pos=buf.find("成交时间");
-												if (bCtrlV && pos >= 0 && pos<20)
+												int pos1=buf.find("成交时间");
+												int pos2=buf.find("成交数量");
+												int pos3=buf.find("成交均价");
+												int pos4=buf.find("成交金额");
+												if (bCtrlV 
+													&& pos1 >= 0 && pos1<512
+													&& pos2 >= 0 && pos2<512
+													&& pos3 >= 0 && pos3<512
+													&& pos4 >= 0 && pos4<512)
 												{
 													return hChildL5;
 												}

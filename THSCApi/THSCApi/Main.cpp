@@ -50,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//return 0;
 	//////////////////////////////////////////////////////////////////////////
 	// DFileLog::GetInstance()->Clear();
-	DFileLog::GetInstance()->EnableSaveLog(false);
+	DFileLog::GetInstance()->EnableSaveLog(true);
 
 	printf("### Main Begin\n");
 
